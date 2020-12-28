@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Cobrinha</title>
+</head>
+<body>
+
+    <h1>Snake Projeto Estudos - JavaScript - Matheus Porciúncula</h1>
+    
+    
+    <canvas id="stage" width="800" height="800"></canvas>
+
+    <script type="text/javascript">
+    window.onload = function(){ 
+        
+        var stage = document.getElementById('stage'); 
+        var ctx = stage.getContext("2d");
+        document.addEventListener("keydown", keyPush);
+        setInterval(game, 60);
+         
+        const velocidade = 1;
+        // Variáveis Para seguir o pensamento Lógico do Jogo
+        var  veloX =  veloY = 0; 
+        var pontoX = 10; 
+        var pontoY = 15; 
+        var tamanhoP = 40; 
+        var quantidadeP = 20; 
+        var comidaX = comidaY = 15; 
+        
+        var rastros = []; 
+
+        calda = 5;
+        
+        // Funções 
+        
+        
+        function game(){
+        pontoX += veloX; 
+        pontoY += veloY; 
+        if(pontoX < 0 ){
+            pontoX = quantidadeP-1;
+        }
+        if(pontoX > quantidadeP-1){
+            pontoX = 0;
+        }
+
+        if(pontoY < 0 ){
+            pontoY = quantidadeP-1;
+        }
+        if(pontoY > quantidadeP-1){
+            pontoY = 0;
+        }
+        
+
+
+
+        ctx.fillStyle = "green"; 
+        ctx.fillRect(0,0, stage.width, stage.height);
+        
+        ctx.fillStyle = "red";
+        ctx.fillRect(comidaX * tamanhoP, comidaY * tamanhoP, tamanhoP, tamanhoP);
+        
+        ctx.fillStyle = "blue";
+
+        for(var i = 0; i < rastros.length; i++){
+            ctx.fillRect(rastros[i].x* tamanhoP, rastros[i].y * tamanhoP, tamanhoP, tamanhoP);
+          if(rastros[i].x == pontoX && rastros[i].y == pontoY){
+              veloX = veloY = 0;
+              calda  = 5;
+          }
+        }
+
+        rastros.push({x:pontoX, y:pontoY})
+        while(rastros.length > calda){
+            rastros.shift();
+        }
+
+        if (comidaX == pontoX  && comidaY == pontoY){
+            calda++;
+            comidaX = Math.floor(Math.random()*quantidadeP);
+            comidaY = Math.floor(Math.random()*quantidadeP);
+        }
+    }
+     
+    // Funções para movimentação através de um Evento:
+    
+    function keyPush(event){
+     switch(event.keyCode){
+            case 37:
+             veloX = -velocidade;
+             veloY = 0; 
+             break;
+            case 38:
+             veloX = 0;
+             veloY = -velocidade; 
+             break;
+             case 39:
+             veloX = velocidade;
+             veloY = 0; 
+             break;
+             case 40:
+             veloX = 0;
+             veloY = velocidade; 
+             break;
+             default:
+                 break;
+     }
+
+    }
+
+
+
+    }
+    </script>
+</body>
+</html>
